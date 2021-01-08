@@ -1,22 +1,14 @@
 import java.util.ArrayList;
 /**
- * Write a description of class GameModel here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Logical model of the FreeCell game.
  */
 public class GameModel
 {
-    // instance variables - replace the example below with your own
     private Deck deck;
     private FreeCell[] freeCells;
     private HomeCell[] homeCells;
     private Tableau[] tableaus;
     
-
-    /**
-     * Constructor for objects of class GameModel
-     */
     public GameModel()
     {
 

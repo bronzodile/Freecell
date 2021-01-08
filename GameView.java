@@ -10,10 +10,12 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
 {
     private GameController gc;
     private CardImage [][] cards;
+    private ArrayList<CardImage> [] tableauViews;
     private boolean canDrag = false;
     private int dragFromX = 0;
     private int dragFromY = 0;
     private CardImage currentCard = null;
+    private ArrayList<CardImage> currentCards = null;
     private static final int LEFT_MARGIN = 50;
     private static final int HOME_LEVEL = 60;
     private static final int TABLEAU_LEVEL = 200;
@@ -21,6 +23,8 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
     private static final int CARD_STEP = 30;
     private static final int WIDTH = 73;
     private static final int HEIGHT = 97;
+    private static final int MAX_LAYERS = 50;
+    private static final int FLOATING_LAYERS_START = 20;
     private Layer[] layers;
     private int currRank;
     private int currSuite;
@@ -37,9 +41,13 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
         setPreferredSize(new Dimension(900,600));
         addMouseListener(this);
         addMouseMotionListener(this);
-        layers = new Layer[20];
-        for (int i = 0; i < 20; i++) {
+        layers = new Layer[MAX_LAYERS];
+        for (int i = 0; i < MAX_LAYERS; i++) {
             layers[i] = new Layer();
+        }
+        tableauViews = new ArrayList [8];
+        for (int i = 0; i < 8; i++) {
+            tableauViews[i] = new ArrayList<CardImage>();
         }
     }
 
@@ -56,23 +64,30 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+        int layersCounter = 0;
                 
         currentCard = findCard(x, y);
         if (currentCard != null) {
             canDrag = true;
+            currentCards = findCards(currentCard);
             dragFromX = x;
             dragFromY = y;
-            for (int i = 0; i < 19; i++) {
-                layers[i].removeCard(currentCard);
+            for(CardImage c: currentCards)
+            {                
+                for (int i = 0; i < FLOATING_LAYERS_START; i++) {
+                    layers[i].removeCard(c);
+                }
+                layers[FLOATING_LAYERS_START + layersCounter].addCard(c);
+                layersCounter++;
             }
-            layers[19].addCard(currentCard);
         }
     }
 
     public void mouseDragged(MouseEvent e) {
         if (canDrag) {
-            currentCard.updateCoordinates(currentCard.getX() + e.getX() - dragFromX, currentCard.getY() + e.getY() - dragFromY);
-            
+            for(CardImage c: currentCards) {
+                c.updateCoordinates(c.getX() + e.getX() - dragFromX, c.getY() + e.getY() - dragFromY);
+            }
             dragFromX = e.getX();
             dragFromY = e.getY();
 
@@ -82,12 +97,17 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
 
     public void mouseReleased(MouseEvent e) {
         canDrag = false;
-        if (currentCard != null) {
+        if (currentCards != null) {
             int x = e.getX();
             int y = e.getY();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < MAX_LAYERS; i++) {
                 layers[i] = new Layer();
             }            
+            for (int i = 0; i < 8; i++) {
+                tableauViews[i] = new ArrayList<CardImage>();
+            }
+            currentCard = null;
+            currentCards = null;
             gc.click(currRank + 1, currSuite, getDropLocation(x, y, 0, 0));
         }
     }  
@@ -100,8 +120,8 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             tempCard.updateCoordinates(LEFT_MARGIN + (tableauNumber - 1) * TABLEAU_STEP, TABLEAU_LEVEL + cardCounter * CARD_STEP);
             layers[cardCounter].addCard(tempCard);
             cardCounter++;
-        }
-        
+            tableauViews[tableauNumber - 1].add(tempCard);
+        }        
     }
     
     public void setFreeCell(ArrayList<P> list) {
@@ -187,6 +207,20 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             }
         }
         return tempCard;
+    }
+    private ArrayList<CardImage> findCards(CardImage currCard) {
+        ArrayList<CardImage> cardsStack = new ArrayList<CardImage>();
+        cardsStack.add(currCard);
+        for (int i = 0; i < 8; i++){
+            for(int j = 0; j < tableauViews[i].size(); j++) {
+                if(tableauViews[i].get(j) == currCard) {
+                    for(int k = j + 1; k < tableauViews[i].size(); k++) {
+                        cardsStack.add(tableauViews[i].get(k));
+                    }
+                }
+            }
+        }
+        return cardsStack;
     }
     
     private int getDropLocation(int x1, int y1, int x2, int y2){

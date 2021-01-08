@@ -1,21 +1,14 @@
 
 /**
- * Write a description of class Card here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * A single playing card with its rank/suite; can be attached to a specific location on the playing table.
  */
 public class Card
 {
-    // instance variables - replace the example below with your own
     private int rank;
     private int suite;
     private Location location;
     private boolean moveable;
 
-    /**
-     * Constructor for objects of class Card
-     */
     public Card(int r, int s)
     {
         rank = r;

@@ -1,19 +1,11 @@
 import java.util.*;
-
 /**
- * Write a description of class Tableau here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * A representation of the tableau location on the playing table.
  */
 public class Tableau implements Location
 {
-    // instance variables - replace the example below with your own
     private ArrayList<Card> cards;
     
-    /**
-     * Constructor for objects of class Tableau
-     */
     public Tableau()
     {       
         cards = new ArrayList<Card>();

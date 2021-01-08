@@ -39,17 +39,5 @@ public class CardImage
     
     public boolean isDraggable() {
         return draggable;
-    }
-    
-    public int layer() {
-        return layer;
-    }
-    
-    public void upOneLayer() {
-        layer = 1;
-    }
-    
-    public void downOneLayer() {
-        layer = 0;
-    }
+    }    
 }
