@@ -28,7 +28,7 @@ public class HomeCell implements Location
     
     public String toString() {
         if (isEmpty()) return null;
-        Iterator i = cards.iterator();
+        Iterator<Card> i = cards.iterator();
         StringBuilder s = new StringBuilder();
         while (i.hasNext()) {
             if (s.length() != 0) {

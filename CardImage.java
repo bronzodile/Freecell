@@ -5,15 +5,13 @@ public class CardImage
     private int x;
     private int y;
     private BufferedImage img;
-    private boolean draggable;    
-    private int layer;
-
+    private boolean draggable;
+    
     public CardImage(int xPos, int yPos, BufferedImage imgIn) {
         x = xPos;
         y = yPos;
         img = imgIn;
-        draggable = true;
-        layer = 0;
+        draggable = true;        
     }
     
     public void updateCoordinates( int xPos, int yPos) {

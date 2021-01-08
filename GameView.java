@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class GameView extends JPanel implements MouseListener, MouseMotionListener
 {
     private GameController gc;
-    private CardImage [][] cards;
+    private CardImage [][] cards;    
     private ArrayList<CardImage> [] tableauViews;
     private boolean canDrag = false;
     private int dragFromX = 0;
@@ -45,7 +45,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
         for (int i = 0; i < MAX_LAYERS; i++) {
             layers[i] = new Layer();
         }
-        tableauViews = new ArrayList [8];
+        tableauViews = (ArrayList<CardImage>[]) new ArrayList [8];
         for (int i = 0; i < 8; i++) {
             tableauViews[i] = new ArrayList<CardImage>();
         }

@@ -31,7 +31,7 @@ public class Tableau implements Location
     }
     
     public String toString() {
-        Iterator i = cards.iterator();
+        Iterator<Card> i = cards.iterator();
         StringBuilder s = new StringBuilder();
         while (i.hasNext()) {
             if (s.length() != 0) {
@@ -70,6 +70,7 @@ public class Tableau implements Location
             } */
         }    
     }   
+    /*
     private boolean isOpposite(int suite1, int suite2) {
         if ((suite1 == 0) || (suite1 == 1)) {
             if ((suite2 == 2) || (suite2 == 3)) {
@@ -82,4 +83,5 @@ public class Tableau implements Location
         }
         return false;
     }
+    */
 }
