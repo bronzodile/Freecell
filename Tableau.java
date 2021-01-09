@@ -52,25 +52,27 @@ public class Tableau implements Location
     private void updateMoveable() {
         if (!cards.isEmpty()) {
             int size = cards.size();
-            Card thisCard = cards.get(size - 1);
             Card prevCard = null;
-            thisCard.setMoveable(true);
-            for (int i = size - 2; i >= 0; i--) {
-                prevCard = cards.get(i);
-                prevCard.setMoveable(false);
-            }
-            /* for (int i = size - 2; i >= 0; i--) {
-                prevCard = cards.get(i);
-                if (thisCard.getRank() - 1 == prevCard.getRank() && isOpposite(thisCard.getSuite(), prevCard.getSuite())) {
-                    prevCard.setMoveable(true);
-                    thisCard = prevCard;
+            Card thisCard = null;
+            for(int i = size - 1; i >= 0; i--){
+                thisCard = cards.get(i);
+                if (prevCard == null){
+                    thisCard.setMoveable(true);
                 } else {
-                    break;
+                    if (prevCard.getMoveable() &&
+                        thisCard.getRank() - 1 == prevCard.getRank() &&
+                        isOpposite(thisCard.getSuite(), prevCard.getSuite()))
+                    {
+                        thisCard.setMoveable(true);
+                    } else {
+                        thisCard.setMoveable(false);
+                    }
                 }
-            } */
+                prevCard = thisCard;
+            }                        
         }    
     }   
-    /*
+    
     private boolean isOpposite(int suite1, int suite2) {
         if ((suite1 == 0) || (suite1 == 1)) {
             if ((suite2 == 2) || (suite2 == 3)) {
@@ -83,5 +85,19 @@ public class Tableau implements Location
         }
         return false;
     }
-    */
+    
+    public ArrayList<Card> getStackToMove(Card currCard){
+        ArrayList<Card> stack = new ArrayList<Card>();
+        boolean appendTheRest = false;
+        for (Card c: cards){
+            if (c == currCard) {
+                appendTheRest = true;
+            }
+            if (appendTheRest) {
+                stack.add(c);
+            }
+        }        
+        return(stack);
+    }
+
 }

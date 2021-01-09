@@ -46,4 +46,8 @@ public class HomeCell implements Location
         }
         return list;
     }
+    public ArrayList<Card> getStackToMove(Card currCard){
+        return(null);
+    }
+
 }

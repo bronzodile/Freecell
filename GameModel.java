@@ -37,9 +37,11 @@ public class GameModel
     
     public void move(int r, int s, int where) {
         Card currentCard = deck.findCard(r, s);
+        ArrayList<Card> stackToMove = currentCard.getLocation().getStackToMove(currentCard);
         if (!currentCard.getMoveable()) return;
         switch (where) {
             case 1: case 2: case 3: case 4:
+                if (stackToMove.size() > 1) return;
                 if (freeCells[where - 1].isEmpty()) {
                     Location l = currentCard.getLocation();
                     l.remove();
@@ -47,6 +49,7 @@ public class GameModel
                 }                       
                 break;
             case 5: case 6: case 7: case 8:
+                if (stackToMove.size() > 1) return;
                 if (homeCells[where - 5].isEmpty()) {
                     if (currentCard.getRank() == 1) {
                         Location l = currentCard.getLocation();
@@ -65,14 +68,20 @@ public class GameModel
                 break;
             case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16:
                 if (tableaus[where - 9].isEmpty()) {
-                    Location l = currentCard.getLocation();
-                    l.remove();
-                    tableaus[where - 9].place(currentCard);
-                } else if (tableaus[where - 9].peek().getRank() - 1 == currentCard.getRank()) {
-                    if (isOpposite(tableaus[where - 9].peek().getSuite(), currentCard.getSuite())) {
-                        Location l = currentCard.getLocation();
+                    if (stackToMove.size() > emptySlotsCount()) return;
+                    for(Card c: stackToMove){
+                        Location l = c.getLocation();
                         l.remove();
-                        tableaus[where - 9].place(currentCard);
+                        tableaus[where - 9].place(c);
+                    }
+                } else if (tableaus[where - 9].peek().getRank() - 1 == currentCard.getRank()) {
+                    if (stackToMove.size() - 1 > emptySlotsCount()) return;
+                    if (isOpposite(tableaus[where - 9].peek().getSuite(), currentCard.getSuite())) {
+                        for(Card c: stackToMove){
+                            Location l = c.getLocation();
+                            l.remove();
+                            tableaus[where - 9].place(c);
+                        }
                     }
                 }
                 break;
@@ -127,5 +136,20 @@ public class GameModel
     
     public ArrayList<P> getHomeCell(int cellNumber) {
         return homeCells[cellNumber - 1].getCards();
-    }    
+    } 
+
+    private int emptySlotsCount(){
+        int count = 0;
+        for(FreeCell fc: freeCells) {
+            if (fc.isEmpty()){
+                count++;
+            }
+        }
+        for(Tableau t: tableaus){
+            if (t.isEmpty()){
+                count++;
+            }
+        }
+        return count;
+    }
 }
