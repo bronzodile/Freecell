@@ -8,7 +8,7 @@ public class GameModel
     private FreeCell[] freeCells;
     private HomeCell[] homeCells;
     private Tableau[] tableaus;
-    
+
     public GameModel()
     {
 
@@ -27,14 +27,14 @@ public class GameModel
             }
         }
         for (int i = 4; i < 8; i++) {
-            tableaus[i] = new Tableau();            
+            tableaus[i] = new Tableau();
             for (int j = 0; j < 6; j++) {
                 tableaus[i].place(deck.getCard());
             }
         }
 
     }
-    
+
     public void move(int r, int s, int where) {
         Card currentCard = deck.findCard(r, s);
         ArrayList<Card> stackToMove = currentCard.getLocation().getStackToMove(currentCard);
@@ -46,7 +46,7 @@ public class GameModel
                     Location l = currentCard.getLocation();
                     l.remove();
                     freeCells[where - 1].place(currentCard);
-                }                       
+                }
                 break;
             case 5: case 6: case 7: case 8:
                 if (stackToMove.size() > 1) return;
@@ -89,7 +89,7 @@ public class GameModel
                 break;
         }
     }
-    
+
     private boolean isOpposite(int suite1, int suite2) {
         if ((suite1 == 0) || (suite1 == 1)) {
             if ((suite2 == 2) || (suite2 == 3)) {
@@ -102,7 +102,7 @@ public class GameModel
         }
         return false;
     }
-    
+
     public void printMe()
     {
         for (int i = 0; i < 4; i++) {
@@ -117,26 +117,26 @@ public class GameModel
             System.out.println(tableaus[i]);
         }
     }
-    
-    public ArrayList<P> getTableau(int tableauNumber) {
+
+    public ArrayList<CardSpecification> getTableau(int tableauNumber) {
         return tableaus[tableauNumber - 1].getCards();
-    }    
-    
-    public ArrayList<P> getFreeCell() {
-        ArrayList<P> list = new ArrayList<P>();
+    }
+
+    public ArrayList<CardSpecification> getFreeCell() {
+        ArrayList<CardSpecification> list = new ArrayList<CardSpecification>();
         for (int i = 0; i < 4; i++) {
             if (freeCells[i].peek() != null) {
-                list.add(new P(freeCells[i].peek().getRank(),freeCells[i].peek().getSuite()));
+                list.add(new CardSpecification(freeCells[i].peek().getRank(),freeCells[i].peek().getSuite()));
             } else {
                 list.add(null);
             }
         }
         return list;
     }
-    
-    public ArrayList<P> getHomeCell(int cellNumber) {
+
+    public ArrayList<CardSpecification> getHomeCell(int cellNumber) {
         return homeCells[cellNumber - 1].getCards();
-    } 
+    }
 
     private int emptySlotsCount(){
         int count = 0;

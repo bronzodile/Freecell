@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class GameView extends JPanel implements MouseListener, MouseMotionListener
 {
     private GameController gc;
-    private CardImage [][] cards;    
+    private CardImage [][] cards;
     private ArrayList<CardImage> [] tableauViews;
     private boolean canDrag = false;
     private int dragFromX = 0;
@@ -51,7 +51,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
         }
     }
 
-    public void paintComponent(Graphics g) {            
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (int i = 0; i < 8; i++) {
             g.drawRect(LEFT_MARGIN + i * TABLEAU_STEP, HOME_LEVEL, WIDTH, HEIGHT);
@@ -65,7 +65,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
         int x = e.getX();
         int y = e.getY();
         int layersCounter = 0;
-                
+
         currentCard = findCard(x, y);
         if (currentCard != null) {
             canDrag = true;
@@ -73,7 +73,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             dragFromX = x;
             dragFromY = y;
             for(CardImage c: currentCards)
-            {                
+            {
                 for (int i = 0; i < FLOATING_LAYERS_START; i++) {
                     layers[i].removeCard(c);
                 }
@@ -102,7 +102,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             int y = e.getY();
             for (int i = 0; i < MAX_LAYERS; i++) {
                 layers[i] = new Layer();
-            }            
+            }
             for (int i = 0; i < 8; i++) {
                 tableauViews[i] = new ArrayList<CardImage>();
             }
@@ -110,24 +110,24 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             currentCards = null;
             gc.click(currRank + 1, currSuite, getDropLocation(x, y, 0, 0));
         }
-    }  
-    
-    public void setTableau(int tableauNumber, ArrayList<P> list) {
+    }
+
+    public void setTableau(int tableauNumber, ArrayList<CardSpecification> list) {
         int cardCounter = 0;
         CardImage tempCard = null;
-        for (P p: list) {
+        for (CardSpecification p: list) {
             tempCard = cards[p.suite][p.rank - 1];
             tempCard.updateCoordinates(LEFT_MARGIN + (tableauNumber - 1) * TABLEAU_STEP, TABLEAU_LEVEL + cardCounter * CARD_STEP);
             layers[cardCounter].addCard(tempCard);
             cardCounter++;
             tableauViews[tableauNumber - 1].add(tempCard);
-        }        
+        }
     }
-    
-    public void setFreeCell(ArrayList<P> list) {
+
+    public void setFreeCell(ArrayList<CardSpecification> list) {
         int cellCounter = 0;
-        CardImage tempCard = null;        
-        for (P p: list) {
+        CardImage tempCard = null;
+        for (CardSpecification p: list) {
             if (p != null) {
                 tempCard = cards[p.suite][p.rank - 1];
                 tempCard.updateCoordinates(LEFT_MARGIN + cellCounter * TABLEAU_STEP, HOME_LEVEL);
@@ -136,15 +136,15 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
             cellCounter++;
         }
     }
-    
-    public void setHomeCell(int cellNumber, ArrayList<P> list) {
+
+    public void setHomeCell(int cellNumber, ArrayList<CardSpecification> list) {
         CardImage tempCard = null;
-        for (P p: list) {
+        for (CardSpecification p: list) {
             tempCard = cards[p.suite][p.rank - 1];
             tempCard.updateCoordinates(LEFT_MARGIN + (cellNumber + 4 - 1) * TABLEAU_STEP, HOME_LEVEL);
             layers[0].addCard(tempCard);
         }
-        
+
     }
 
     public void mouseExited(MouseEvent e) {}
@@ -165,7 +165,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
     }
 
     private BufferedImage getImage(int i, int j) {
-        char c = ' ';        
+        char c = ' ';
         switch(i) {
             case 0:
             c = 'h';
@@ -222,7 +222,7 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
         }
         return cardsStack;
     }
-    
+
     private int getDropLocation(int x1, int y1, int x2, int y2){
         if (x1 < LEFT_MARGIN) return 0;
         if (x1 > LEFT_MARGIN + 7 * TABLEAU_STEP + WIDTH) return 0;
@@ -236,6 +236,6 @@ public class GameView extends JPanel implements MouseListener, MouseMotionListen
                 }
             }
         }
-        return 0;        
+        return 0;
     }
 }

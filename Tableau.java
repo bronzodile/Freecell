@@ -5,31 +5,31 @@ import java.util.*;
 public class Tableau implements Location
 {
     private ArrayList<Card> cards;
-    
+
     public Tableau()
-    {       
+    {
         cards = new ArrayList<Card>();
     }
 
     public boolean isEmpty() {
         return (cards.isEmpty());
     }
-    
+
     public void remove() {
         cards.remove(cards.size() - 1);
         updateMoveable();
     }
-    
+
     public void place(Card c) {
         cards.add(c);
         c.setLocation(this);
         updateMoveable();
     }
-    
+
     public Card peek() {
         return cards.get(cards.size() - 1);
     }
-    
+
     public String toString() {
         Iterator<Card> i = cards.iterator();
         StringBuilder s = new StringBuilder();
@@ -41,14 +41,14 @@ public class Tableau implements Location
         }
         return s.toString();
     }
-    public ArrayList<P> getCards() {
-        ArrayList<P> list = new ArrayList<P>();
+    public ArrayList<CardSpecification> getCards() {
+        ArrayList<CardSpecification> list = new ArrayList<CardSpecification>();
         for (Card c: cards) {
-            list.add(new P(c.getRank(), c.getSuite()));
+            list.add(new CardSpecification(c.getRank(), c.getSuite()));
         }
         return list;
     }
-    
+
     private void updateMoveable() {
         if (!cards.isEmpty()) {
             int size = cards.size();
@@ -69,10 +69,10 @@ public class Tableau implements Location
                     }
                 }
                 prevCard = thisCard;
-            }                        
-        }    
-    }   
-    
+            }
+        }
+    }
+
     private boolean isOpposite(int suite1, int suite2) {
         if ((suite1 == 0) || (suite1 == 1)) {
             if ((suite2 == 2) || (suite2 == 3)) {
@@ -85,7 +85,7 @@ public class Tableau implements Location
         }
         return false;
     }
-    
+
     public ArrayList<Card> getStackToMove(Card currCard){
         ArrayList<Card> stack = new ArrayList<Card>();
         boolean appendTheRest = false;
@@ -96,7 +96,7 @@ public class Tableau implements Location
             if (appendTheRest) {
                 stack.add(c);
             }
-        }        
+        }
         return(stack);
     }
 

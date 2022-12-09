@@ -1,9 +1,9 @@
-public class P
+public class CardSpecification
 {
     public int rank;
     public int suite;
 
-    public P(int r, int s)
+    public CardSpecification(int r, int s)
     {
         rank = r;
         suite = s;
